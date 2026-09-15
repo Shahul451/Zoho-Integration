@@ -1,9 +1,6 @@
 # Dependencies
 node_modules/
 
-# Production Build
-dist/
-
 # Environment Variables & Secrets
 .env
 *.env
