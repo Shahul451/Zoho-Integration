@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zoho Books to Power BI Integration Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0a0d14;
+      --card-bg: rgba(18, 24, 38, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent-blue: #3b82f6;
+      --accent-cyan: #06b6d4;
+      --accent-green: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-purple: #8b5cf6;
+      --text-main: #f3f4f6;
+      --text-sub: #9ca3af;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.1) 0px, transparent 50%);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 2rem 1.5rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo-badge {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      color: var(--text-sub);
+      font-size: 0.9rem;
+      margin-top: 2px;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--accent-green);
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--accent-green);
+      box-shadow: 0 0 10px var(--accent-green);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 850px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      font-size: 0.9rem;
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .info-label {
+      color: var(--text-sub);
+    }
+
+    .info-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, var(--accent-blue), #2563eb);
+      color: white;
+      border: none;
+      padding: 0.65rem 1.25rem;
+      border-radius: 10px;
+      font-weight: 500;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      box-shadow: none;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      box-shadow: none;
+    }
+
+    .tables-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .table-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.2rem;
+      position: relative;
+    }
+
+    .table-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--accent-cyan);
+      margin-bottom: 0.3rem;
+    }
+
+    .table-url {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--text-sub);
+      word-break: break-all;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 6px 10px;
+      border-radius: 6px;
+      margin: 0.6rem 0;
+    }
+
+    .table-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.8rem;
+    }
+
+    .code-box {
+      background: #06080d;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: #a7f3d0;
+      overflow-x: auto;
+      margin-top: 0.8rem;
+      line-height: 1.5;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .tab-btn {
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-sub);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .tab-btn.active {
+      background: var(--accent-blue);
+      color: white;
+      border-color: var(--accent-blue);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo-group">
+        <div class="logo-badge">ZPB</div>
+        <div>
+          <h1>Zoho Books ➔ Power BI Connector</h1>
+          <div class="subtitle">Automatic OAuth 2.0 Token Refresh Middleware</div>
+        </div>
+      </div>
+      <div id="statusPill" class="status-pill">
+        <span class="status-dot"></span>
+        <span id="statusText">Checking status...</span>
+      </div>
+    </header>
+
+    <div class="grid-2">
+      <!-- Connection Status Card -->
+      <div class="card">
+        <div class="card-title">
+          ⚡ Connection & Token Health
+        </div>
+        <div class="info-row">
+          <span class="info-label">Server Host:</span>
+          <span id="serverHost" class="info-value">http://localhost:3000</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Zoho Region:</span>
+          <span id="zohoRegion" class="info-value">--</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Auto Token Refresh:</span>
+          <span class="info-value" style="color: var(--accent-green);">Active (Every ~60 mins)</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Current Access Token:</span>
+          <span id="tokenExpiry" class="info-value">Valid</span>
+        </div>
+        <div style="margin-top: 1.2rem; display: flex; gap: 0.75rem;">
+          <button class="btn" onclick="forceRefreshToken()">
+            🔄 Force Token Refresh
+          </button>
+          <button class="btn btn-secondary" onclick="checkStatus()">
+            🔍 Re-Check Health
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Setup Instructions -->
+      <div class="card">
+        <div class="card-title">
+          📊 How to Query in Power BI Desktop
+        </div>
+        <ol style="margin-left: 1.2rem; line-height: 1.6; font-size: 0.88rem; color: var(--text-sub);">
+          <li>Open <strong>Power BI Desktop</strong>.</li>
+          <li>Click <strong>Get Data</strong> ➔ <strong>Web</strong>.</li>
+          <li>Select <strong>Basic</strong> and paste any Table Endpoint URL below (e.g., <code style="color: var(--accent-cyan)">http://localhost:3000/api/powerbi/invoices</code>).</li>
+          <li>Click <strong>OK</strong>. Power BI will auto-load the clean tabular data!</li>
+          <li>Token updates occur <em>automatically in the background</em>—no manual token changes ever required!</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Tables Catalog Card -->
+    <div class="card">
+      <div class="card-title">
+        📁 Available Power BI Data Tables
+      </div>
+      <p style="color: var(--text-sub); font-size: 0.88rem;">Copy table URLs or click 'Test Query' to preview tabular output.</p>
+      
+      <div class="tables-grid">
+        <!-- Invoices -->
+        <div class="table-card">
+          <div class="table-name">📄 Invoices Table</div>
+          <div class="table-url" id="url-invoices">http://localhost:3000/api/powerbi/invoices</div>
+          <div class="table-actions">
+            <button class="btn btn-secondary" onclick="copyUrl('url-invoices')">📋 Copy URL</button>
+            <button class="btn" onclick="testEndpoint('/api/powerbi/invoices')">▶️ Test Query</button>
+          </div>
+        </div>
+
+        <!-- Contacts -->
+        <div class="table-card">
+          <div class="table-name">👤 Contacts (Customers & Vendors)</div>
+          <div class="table-url" id="url-contacts">http://localhost:3000/api/powerbi/contacts</div>
+          <div class="table-actions">
+            <button class="btn btn-secondary" onclick="copyUrl('url-contacts')">📋 Copy URL</button>
+            <button class="btn" onclick="testEndpoint('/api/powerbi/contacts')">▶️ Test Query</button>
+          </div>
+        </div>
+
+        <!-- Items -->
+        <div class="table-card">
+          <div class="table-name">📦 Items (Products & Services)</div>
+          <div class="table-url" id="url-items">http://localhost:3000/api/powerbi/items</div>
+          <div class="table-actions">
+            <button class="btn btn-secondary" onclick="copyUrl('url-items')">📋 Copy URL</button>
+            <button class="btn" onclick="testEndpoint('/api/powerbi/items')">▶️ Test Query</button>
+          </div>
+        </div>
+
+        <!-- Customer Payments -->
+        <div class="table-card">
+          <div class="table-name">💳 Payments Received</div>
+          <div class="table-url" id="url-payments">http://localhost:3000/api/powerbi/payments</div>
+          <div class="table-actions">
+            <button class="btn btn-secondary" onclick="copyUrl('url-payments')">📋 Copy URL</button>
+            <button class="btn" onclick="testEndpoint('/api/powerbi/payments')">▶️ Test Query</button>
+          </div>
+        </div>
+
+        <!-- Vendor Bills -->
+        <div class="table-card">
+          <div class="table-name">🧾 Vendor Bills</div>
+          <div class="table-url" id="url-bills">http://localhost:3000/api/powerbi/bills</div>
+          <div class="table-actions">
+            <button class="btn btn-secondary" onclick="copyUrl('url-bills')">📋 Copy URL</button>
+            <button class="btn" onclick="testEndpoint('/api/powerbi/bills')">▶️ Test Query</button>
+          </div>
+        </div>
+
+        <!-- Expenses -->
+        <div class="table-card">
+          <div class="table-name">💸 Expenses</div>
+          <div class="table-url" id="url-expenses">http://localhost:3000/api/powerbi/expenses</div>
+          <div class="table-actions">
+            <button class="btn btn-secondary" onclick="copyUrl('url-expenses')">📋 Copy URL</button>
+            <button class="btn" onclick="testEndpoint('/api/powerbi/expenses')">▶️ Test Query</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Power Query M Script Snippets -->
+    <div class="card" style="margin-top: 1.5rem;">
+      <div class="card-title">
+        💻 Direct Power Query (M Code) Script Generator
+      </div>
+      <p style="color: var(--text-sub); font-size: 0.88rem;">If you prefer using Power BI Advanced Editor directly, use this M query script template:</p>
+      
+      <div class="code-box">
+let
+    Source = Json.Document(Web.Contents("<span id="mUrl">http://localhost:3000/api/powerbi/invoices</span>")),
+    ConvertedToTable = Table.FromList(Source, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+    ExpandedColumns = Table.ExpandRecordColumn(ConvertedToTable, "Column1", Record.FieldNames(ConvertedToTable{0}[Column1]))
+in
+    ExpandedColumns
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function checkStatus() {
+      try {
+        const res = await fetch('/api/powerbi/status');
+        const data = await res.json();
+        
+        document.getElementById('serverHost').innerText = window.location.origin;
+        document.getElementById('zohoRegion').innerText = (data.region || 'in').toUpperCase();
+
+        if (data.credentialsConfigured && data.tokenStatus?.isValid) {
+          document.getElementById('statusPill').style.borderColor = 'rgba(16, 185, 129, 0.3)';
+          document.getElementById('statusText').innerText = 'Connected & Token Active';
+          document.getElementById('tokenExpiry').innerText = `Valid (${data.tokenStatus.remainingSeconds}s left)`;
+        } else if (!data.credentialsConfigured) {
+          document.getElementById('statusPill').style.borderColor = 'rgba(245, 158, 11, 0.4)';
+          document.getElementById('statusText').innerText = 'Missing Credentials in .env';
+          document.getElementById('tokenExpiry').innerText = 'Please update .env file';
+        } else {
+          document.getElementById('statusPill').style.borderColor = 'rgba(239, 68, 68, 0.4)';
+          document.getElementById('statusText').innerText = 'Token Expired / Refresh Required';
+        }
+
+        // Update URLs
+        ['invoices', 'contacts', 'items', 'payments', 'bills', 'expenses'].forEach(id => {
+          const el = document.getElementById(`url-${id}`);
+          if (el) el.innerText = `${window.location.origin}/api/powerbi/${id}`;
+        });
+      } catch (err) {
+        document.getElementById('statusText').innerText = 'Server Offline';
+      }
+    }
+
+    async function forceRefreshToken() {
+      try {
+        const res = await fetch('/api/powerbi/refresh-token', { method: 'POST' });
+        const data = await res.json();
+        alert(data.message || 'Token refreshed!');
+        checkStatus();
+      } catch (err) {
+        alert('Failed to refresh token: ' + err.message);
+      }
+    }
+
+    function copyUrl(elementId) {
+      const text = document.getElementById(elementId).innerText;
+      navigator.clipboard.writeText(text);
+      alert('Copied URL to clipboard: ' + text);
+    }
+
+    function testEndpoint(path) {
+      window.open(path, '_blank');
+    }
+
+    // Check status on load
+    checkStatus();
+  </script>
+</body>
+</html>
