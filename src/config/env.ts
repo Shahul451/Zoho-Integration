@@ -39,8 +39,11 @@ export const getEnv = () => {
   const region = (process.env.ZOHO_REGION || 'in').toLowerCase();
   const domainConfig = REGION_DOMAINS[region] || REGION_DOMAINS['in'];
 
+  const rawPort = process.env.PORT || '3000';
+  const port = /^\d+$/.test(rawPort) ? parseInt(rawPort, 10) : rawPort;
+
   return {
-    port: parseInt(process.env.PORT || '3000', 10),
+    port,
     clientId: process.env.ZOHO_CLIENT_ID || '',
     clientSecret: process.env.ZOHO_CLIENT_SECRET || '',
     refreshToken: process.env.ZOHO_REFRESH_TOKEN || '',

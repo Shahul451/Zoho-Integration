@@ -7,7 +7,8 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "dev": "ts-node src/server.ts",
-    "exchange-code": "ts-node scripts/exchangeCode.ts"
+    "exchange-code": "ts-node scripts/exchangeCode.ts",
+    "postinstall": "npm run build"
   },
   "keywords": [
     "zoho",
