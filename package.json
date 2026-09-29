@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Zoho Books to Power BI integration with automatic OAuth token refresh",
   "main": "dist/server.js",
+  "engines": {
+  "node": "22.x"
+      },
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
